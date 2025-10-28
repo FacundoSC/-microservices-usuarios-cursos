@@ -1,5 +1,6 @@
 package org.faccordoba.springcloud.msvc.usuarios.msvc.usuarios.adapter.in.web.controller;
 
+import jakarta.validation.Valid;
 import org.faccordoba.springcloud.msvc.usuarios.msvc.usuarios.application.dto.request.ActualizarUsuarioRequest;
 import org.faccordoba.springcloud.msvc.usuarios.msvc.usuarios.application.dto.request.CrearUsuarioRequest;
 import org.faccordoba.springcloud.msvc.usuarios.msvc.usuarios.application.dto.response.UsuarioResponse;
@@ -19,7 +20,7 @@ public class UsuarioController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<UsuarioResponse> save(@RequestBody CrearUsuarioRequest usuario) {
+    public ResponseEntity<UsuarioResponse> save(@Valid @RequestBody CrearUsuarioRequest usuario) {
         return ResponseEntity.status(HttpStatus.CREATED.value())
                         .body(service.save(usuario));
     }
@@ -41,7 +42,7 @@ public class UsuarioController {
 
     @PutMapping("/{id}")
     public ResponseEntity<?> update(@PathVariable(value = "id") Long id,
-                                    @RequestBody ActualizarUsuarioRequest request) {
+                                    @Valid @RequestBody ActualizarUsuarioRequest request) {
         return ResponseEntity.ok(service.upload(id, request));
     }
 

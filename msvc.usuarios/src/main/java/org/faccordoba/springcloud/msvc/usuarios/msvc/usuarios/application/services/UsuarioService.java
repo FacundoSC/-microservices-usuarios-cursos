@@ -36,7 +36,6 @@ public class UsuarioService implements CrearUsuarioUseCase, ObtenerUsuarioUseCas
         log.info("Iniciando creación de usuario con email: {}", request.email());
         validarEmailUnico(request.email());
         Usuario usuario = mapper.toDomain(request);
-        // usuario.validar();
         Usuario usuarioGuardado = repository.save(usuario);
         log.info("Usuario creado exitosamente con ID: {}", usuarioGuardado.getId());
         return mapper.toResponse(usuarioGuardado);
@@ -79,10 +78,7 @@ public class UsuarioService implements CrearUsuarioUseCase, ObtenerUsuarioUseCas
         }
         usuarioExistente.setNombre(request.nombre());
         usuarioExistente.setEmail(request.email());
-        // usuarioExistente.validar();
-
         Usuario usuarioActualizado = repository.save(usuarioExistente);
-
         log.info("Usuario actualizado exitosamente: {}", id);
         return mapper.toResponse(usuarioActualizado);
     }
