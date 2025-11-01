@@ -2,6 +2,7 @@ package org.faccordoba.springcloud.msvc.usuarios.msvc.usuarios.domain.port.out.r
 
 import org.faccordoba.springcloud.msvc.usuarios.msvc.usuarios.domain.model.Usuario;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,5 +13,6 @@ public interface UsuarioRepository {
     boolean existsById(Long id);
     boolean existsByEmail(String email);
     List<Usuario> findAll();
+    List<Usuario> findAllById(ArrayList<Long> ids);
     void deleteById(Long id);
 }
