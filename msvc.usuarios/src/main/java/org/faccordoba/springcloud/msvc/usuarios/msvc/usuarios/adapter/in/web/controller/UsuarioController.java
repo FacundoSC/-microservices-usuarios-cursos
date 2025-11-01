@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+
 
 @RestController
 @RequestMapping("/api/v1/usuarios")
@@ -28,6 +30,10 @@ public class UsuarioController {
     @GetMapping("/")
     public ResponseEntity<?> findAll() {
         return ResponseEntity.ok(service.findAll());
+    }
+    @GetMapping("")
+    public ResponseEntity<?> findAllById(@RequestParam(value = "ids") ArrayList<Long> ids) {
+        return ResponseEntity.ok(service.findAllById(ids));
     }
 
     @GetMapping("/{id}")

@@ -1,6 +1,7 @@
 package org.faccordoba.springcloud.msvc.usuarios.msvc.usuarios.application.services;
 
 import lombok.extern.slf4j.Slf4j;
+import org.faccordoba.springcloud.msvc.usuarios.msvc.usuarios.adapter.out.external.feing.CursoClienteRest;
 import org.faccordoba.springcloud.msvc.usuarios.msvc.usuarios.application.dto.request.ActualizarUsuarioRequest;
 import org.faccordoba.springcloud.msvc.usuarios.msvc.usuarios.application.dto.request.CrearUsuarioRequest;
 import org.faccordoba.springcloud.msvc.usuarios.msvc.usuarios.application.dto.response.UsuarioResponse;
@@ -16,6 +17,7 @@ import org.faccordoba.springcloud.msvc.usuarios.msvc.usuarios.domain.port.out.re
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -23,10 +25,12 @@ import java.util.List;
 @Slf4j
 public class UsuarioService implements CrearUsuarioUseCase, ObtenerUsuarioUseCase, EliminarUsuarioUseCase, ActualizarUsuarioUseCase {
     private final UsuarioRepository repository;
+    private final CursoClienteRest cursoClienteRest;
     private final UsuarioDomainMapper mapper;
 
-    public UsuarioService(UsuarioRepository repository, UsuarioDomainMapper mapper) {
+    public UsuarioService(UsuarioRepository repository, CursoClienteRest cursoClienteRest, UsuarioDomainMapper mapper) {
         this.repository = repository;
+        this.cursoClienteRest = cursoClienteRest;
         this.mapper = mapper;
     }
       //TODO ==================== CREAR ====================
@@ -55,6 +59,15 @@ public class UsuarioService implements CrearUsuarioUseCase, ObtenerUsuarioUseCas
     public List<UsuarioResponse> findAll() {
         log.debug("Obteniendo todos los usuarios");
         List<Usuario> usuarios = repository.findAll();
+        return mapper.toResponseList(usuarios);
+    }
+
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<UsuarioResponse> findAllById(ArrayList<Long> ids) {
+        log.debug("Obteniendo todos los usuarios");
+        List<Usuario> usuarios = repository.findAllById(ids);
         return mapper.toResponseList(usuarios);
     }
 
@@ -93,6 +106,7 @@ public class UsuarioService implements CrearUsuarioUseCase, ObtenerUsuarioUseCas
             throw new UsuarioNotFound(id);
         }
         repository.deleteById(id);
+        cursoClienteRest.eliminarCursoUsuario(id);
         log.info("Usuario eliminado exitosamente: {}", id);
     }
 
