@@ -101,6 +101,15 @@
 
 	<build>
 		<plugins>
+
+            <!-- Manifest -->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <mainClass>org.faccordoba.springcloud.msvc.cursos.msvc.cursos.Application</mainClass>
+                </configuration>
+            </plugin>
             <!-- Compilador -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
