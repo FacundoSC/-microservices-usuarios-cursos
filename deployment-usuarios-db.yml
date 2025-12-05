@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: usuarios-db
+  name: usuarios-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: usuarios-db
+  template:
+    metadata:
+      labels:
+        app: usuarios-db
+    spec:
+      containers:
+      - image: mysql:latest
+        name: mysql
+        ports:
+        - containerPort: 3306
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: "sasa"
+        - name: MYSQL_DATABASE
+          value: "msvc_usuarios"
