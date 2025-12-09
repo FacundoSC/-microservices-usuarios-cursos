@@ -22,15 +22,35 @@ spec:
         - containerPort: 8001
         env:
         - name: PORT
-          value: "8001"
+          valueFrom:
+            configMapKeyRef:
+              name: msvc-usuarios
+              key: port
         - name: DB_HOST
-          value: usuarios-db:3306
+          valueFrom:
+            configMapKeyRef:
+              name: msvc-usuarios
+              key: db_host
         - name: DB_NAME
-          value: msvc_usuarios
+          valueFrom:
+            configMapKeyRef:
+              name: msvc-usuarios
+              key: db_name
         - name: DB_USERNAME
-          value: root
+          valueFrom:
+            configMapKeyRef:
+              name: msvc-usuarios
+              key: db_username
         - name: DB_PASSWORD
-          value: sasa
+          valueFrom:
+            secretKeyRef:
+              name: msvc-usuarios
+              key: password
+        - name: CURSOS_URL
+          valueFrom:
+            configMapKeyRef:
+              name: msvc-usuarios
+              key: cursos_url
         resources: {}
         imagePullPolicy: Always
 status: {}
