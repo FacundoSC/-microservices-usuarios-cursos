@@ -14,20 +14,6 @@ services:
     networks:
       - spring
 
-  cursos-db:
-    container_name: cursos-db
-    image: postgres:15
-    ports:
-      - "5432:5532"
-    environment:
-      POSTGRES_PASSWORD: sasa
-      POSTGRES_DB: msvc_cursos
-    volumes:
-      -  data-postgres:/var/lib/postgresql/data
-    restart: always
-    networks:
-      - spring
-
   msvc-usuarios:
     container_name: msvc-usuarios
     image: faccordoba/usuarios:latest
@@ -45,30 +31,9 @@ services:
     restart:
         always
 
-  msvc-cursos:
-    container_name: msvc-cursos
-    image: faccordoba/usuarios:latest
-    env_file:
-      - msvc.cursos/.env
-#    build:
-#      context: ./
-#      dockerfile: ./msvc.cursos/Dockerfile
-    ports:
-      - "8002:8002"
-    networks:
-      - spring
-    depends_on:
-      - cursos-db
-      - msvc-usuarios
-    restart:
-        always
-
-
 volumes:
   data-mysql:
     name: data-mysql
-  data-postgres:
-    name: data-postgres
 
 networks:
   spring:
