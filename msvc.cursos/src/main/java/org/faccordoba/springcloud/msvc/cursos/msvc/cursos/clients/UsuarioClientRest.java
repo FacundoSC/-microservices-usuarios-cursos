@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@FeignClient(name = "msvc-usuarios", url= "${msvc.usuarios.url}")
+@FeignClient(name = "msvc-usuarios")
 public interface UsuarioClientRest {
 
 

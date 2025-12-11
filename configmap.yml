@@ -8,6 +8,25 @@ data:
   db_name: msvc_usuarios
   db_username: root
   cursos_url: msvc-cursos:8002
+  spring-profiles-active: dev
+  msvc-usuarios.yml: |-
+    config:
+      texto: Configurando ambiente por defecto
+    ---
+    spring:
+      config:
+        activate:
+          on-profile: dev
+    config:
+      texto: Configurando ambiente de desarrollo
+    ---
+    spring:
+      config:
+        activate:
+          on-profile: prod
+    config:
+      texto: Configurando ambiente de produccion
+    ---
 ---
 apiVersion: v1
 kind: ConfigMap

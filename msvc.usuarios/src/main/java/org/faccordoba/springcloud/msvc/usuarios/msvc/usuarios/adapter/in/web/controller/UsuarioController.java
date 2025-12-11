@@ -5,20 +5,25 @@ import org.faccordoba.springcloud.msvc.usuarios.msvc.usuarios.application.dto.re
 import org.faccordoba.springcloud.msvc.usuarios.msvc.usuarios.application.dto.request.CrearUsuarioRequest;
 import org.faccordoba.springcloud.msvc.usuarios.msvc.usuarios.application.dto.response.UsuarioResponse;
 import org.faccordoba.springcloud.msvc.usuarios.msvc.usuarios.application.services.UsuarioService;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 
 @RestController
 @RequestMapping("/api/v1/usuarios")
 public class UsuarioController {
     private final UsuarioService service;
+    private final Environment env;
 
-    public UsuarioController(UsuarioService service) {
+    public UsuarioController(UsuarioService service, Environment env) {
         this.service = service;
+        this.env = env;
     }
 
     @PostMapping("/")
@@ -29,7 +34,11 @@ public class UsuarioController {
 
     @GetMapping("/")
     public ResponseEntity<?> findAll() {
-        return ResponseEntity.ok(service.findAll());
+        Map<String, Object> response = new HashMap<>();
+        response.put("usuarios", service.findAll());
+        response.put("podsInfo", env.getProperty("MY_POD_NAME")+" - "+env.getProperty("MY_POD_IP"));
+        response.put("texto", env.getProperty("config.texto"));
+        return ResponseEntity.ok(response);
     }
     @GetMapping("")
     public ResponseEntity<?> findAllById(@RequestParam(value = "ids") ArrayList<Long> ids) {
