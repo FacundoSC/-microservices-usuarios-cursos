@@ -8,6 +8,7 @@ import org.faccordoba.springcloud.msvc.usuarios.msvc.usuarios.domain.model.Usuar
 import org.faccordoba.springcloud.msvc.usuarios.msvc.usuarios.domain.port.out.repository.UsuarioRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -53,6 +54,14 @@ public class UsuarioRepositoryAdapter implements UsuarioRepository {
     @Override
     public List<Usuario> findAll() {
         return usuarioMapper.toDomainList(repository.findAll());
+    }
+
+    @Override
+    public List<Usuario> findAllById(ArrayList<Long> ids) {
+        return repository.findAllByIdIn(ids)
+                .stream()
+                .map(usuarioMapper::toDomain)
+                .toList();
     }
 
     public void deleteById(Long id) {

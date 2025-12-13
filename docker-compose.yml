@@ -1,0 +1,78 @@
+version: "3.9"
+services:
+  usuarios-db:
+    container_name: usuarios-db
+    image: mysql:latest
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: sasa
+      MYSQL_DATABASE: msvc_usuarios
+    volumes:
+      -  data-mysql:/var/lib/mysql
+    restart: always
+    networks:
+      - spring
+
+  cursos-db:
+    container_name: cursos-db
+    image: postgres:15
+    ports:
+      - "5432:5532"
+    environment:
+      POSTGRES_PASSWORD: sasa
+      POSTGRES_DB: msvc_cursos
+    volumes:
+      -  data-postgres:/var/lib/postgresql/data
+    restart: always
+    networks:
+      - spring
+
+  msvc-usuarios:
+    container_name: msvc-usuarios
+    image: faccordoba/usuarios:latest
+    env_file:
+      - msvc.usuarios/.env
+#    build:
+#       context: ./
+#        dockerfile: ./msvc.usuarios/Dockerfile
+    ports:
+      - "8001:8001"
+    networks:
+      - spring
+    depends_on:
+      - usuarios-db
+    restart:
+        always
+
+  msvc-cursos:
+    container_name: msvc-cursos
+    image: faccordoba/usuarios:latest
+    env_file:
+      - msvc.cursos/.env
+#    build:
+#      context: ./
+#      dockerfile: ./msvc.cursos/Dockerfile
+    ports:
+      - "8002:8002"
+    networks:
+      - spring
+    depends_on:
+      - cursos-db
+      - msvc-usuarios
+    restart:
+        always
+
+
+volumes:
+  data-mysql:
+    name: data-mysql
+  data-postgres:
+    name: data-postgres
+
+networks:
+  spring:
+    name: spring
+    external: true
+    driver: bridge
+

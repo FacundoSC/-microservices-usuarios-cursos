@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: msvc-cursos
+  name: msvc-cursos
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: msvc-cursos
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: msvc-cursos
+    spec:
+      containers:
+      - image: faccordoba/cursos:latest
+        name: cursos
+        ports:
+        - containerPort: 8002
+        resources: {}
+        env:
+        - name: PORT
+          valueFrom:
+            configMapKeyRef:
+              name: msvc-cursos
+              key: port
+        - name: DB_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: msvc-cursos
+              key: db_host
+        - name: DB_DATABASE
+          valueFrom:
+            configMapKeyRef:
+              name: msvc-cursos
+              key: db_name
+        - name: DB_USERNAME
+          valueFrom:
+            configMapKeyRef:
+              name: msvc-cursos
+              key: db_username
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: msvc-cursos
+              key: password
+        - name: USUARIOS_URL
+          valueFrom:
+            configMapKeyRef:
+              name: msvc-cursos
+              key: usuarios_url
+status: {}

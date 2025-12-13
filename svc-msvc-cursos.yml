@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: msvc-cursos
+  name: msvc-cursos
+spec:
+  ports:
+  - nodePort: 32550
+    port: 8002
+    protocol: TCP
+    targetPort: 8002
+  selector:
+    app: msvc-cursos
+  sessionAffinity: None
+  type: LoadBalancer
+status:
+  loadBalancer: {}

@@ -1,0 +1,43 @@
+version: "3.9"
+services:
+  usuarios-db:
+    container_name: usuarios-db
+    image: mysql:latest
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: sasa
+      MYSQL_DATABASE: msvc_usuarios
+    volumes:
+      -  data-mysql:/var/lib/mysql
+    restart: always
+    networks:
+      - spring
+
+  msvc-usuarios:
+    container_name: msvc-usuarios
+    image: faccordoba/usuarios:latest
+    env_file:
+      - msvc.usuarios/.env
+#    build:
+#       context: ./
+#        dockerfile: ./msvc.usuarios/Dockerfile
+    ports:
+      - "8001:8001"
+    networks:
+      - spring
+    depends_on:
+      - usuarios-db
+    restart:
+        always
+
+volumes:
+  data-mysql:
+    name: data-mysql
+
+networks:
+  spring:
+    name: spring
+    external: true
+    driver: bridge
+

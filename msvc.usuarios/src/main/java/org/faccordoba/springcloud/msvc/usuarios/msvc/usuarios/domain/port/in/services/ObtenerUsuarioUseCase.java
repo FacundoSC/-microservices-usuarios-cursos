@@ -4,6 +4,7 @@ package org.faccordoba.springcloud.msvc.usuarios.msvc.usuarios.domain.port.in.se
 import org.faccordoba.springcloud.msvc.usuarios.msvc.usuarios.application.dto.response.UsuarioResponse;
 import org.faccordoba.springcloud.msvc.usuarios.msvc.usuarios.domain.exception.UsuarioNotFound;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -27,6 +28,14 @@ public interface ObtenerUsuarioUseCase {
      * @return lista de usuarios (puede estar vacía)
      */
     List<UsuarioResponse> findAll();
+
+
+    /**
+     * Obtiene todos los usuarios del sistema
+     *
+     * @return lista de usuarios (puede estar vacía)
+     */
+    List<UsuarioResponse> findAllById(ArrayList<Long> ids);
 
     /**
      * Busca un usuario por su email

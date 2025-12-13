@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cursos-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cursos-db
+  template:
+    metadata:
+      labels:
+        app: cursos-db
+    spec:
+      containers:
+      - image: postgres:15
+        name: postgres
+        ports:
+        - containerPort: 5432
+        env:
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: msvc-cursos
+              key: password
+        - name: POSTGRES_DB
+          valueFrom:
+            configMapKeyRef:
+              name: msvc-cursos
+              key: db_name
+        volumeMounts:
+        - name: data-postgres
+          mountPath: /var/lib/postgresql/data
+      volumes:
+        - name: data-postgres
+          persistentVolumeClaim:
+            claimName: postgres-pvc
