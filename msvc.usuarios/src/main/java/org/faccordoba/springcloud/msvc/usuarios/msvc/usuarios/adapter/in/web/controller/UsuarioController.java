@@ -13,7 +13,6 @@ import java.util.ArrayList;
 
 
 @RestController
-@RequestMapping("/api/v1/usuarios")
 public class UsuarioController {
     private final UsuarioService service;
 
@@ -27,11 +26,11 @@ public class UsuarioController {
                         .body(service.save(usuario));
     }
 
-    @GetMapping("/")
+    @GetMapping()
     public ResponseEntity<?> findAll() {
         return ResponseEntity.ok(service.findAll());
     }
-    @GetMapping("")
+    @GetMapping("/ids")
     public ResponseEntity<?> findAllById(@RequestParam(value = "ids") ArrayList<Long> ids) {
         return ResponseEntity.ok(service.findAllById(ids));
     }

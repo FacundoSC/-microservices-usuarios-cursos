@@ -12,10 +12,10 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/v1/cursos")
 public class CursosController {
     private final CursoService service;
-    public  CursosController(CursoService service) {
+
+    public CursosController(CursoService service) {
         this.service = service;
     }
 
@@ -24,12 +24,10 @@ public class CursosController {
         return ResponseEntity.ok(service.findAll());
     }
 
-
     @GetMapping("/{id}")
     public ResponseEntity<Curso> findById(@PathVariable("id") Long id) {
         Optional<Curso> cursoOptional = service.findById(id);
-        return cursoOptional.map
-                (ResponseEntity::ok)
+        return cursoOptional.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
@@ -49,8 +47,7 @@ public class CursosController {
         Curso update = service.update(id, curso);
         if (update == null) {
             return ResponseEntity.notFound().build();
-        }
-        else {
+        } else {
             return ResponseEntity.ok(update);
         }
     }
@@ -61,13 +58,12 @@ public class CursosController {
         return ResponseEntity.status(HttpStatus.OK).body(curso);
     }
 
-
     @PutMapping("{cursoId}/desasignar-usuario/")
-    public ResponseEntity<Curso> desasignarUsuario(@PathVariable("cursoId") Long cursoId, @RequestBody Usuario usuario) {
+    public ResponseEntity<Curso> desasignarUsuario(@PathVariable("cursoId") Long cursoId,
+            @RequestBody Usuario usuario) {
         Curso curso = service.desasignarUsuario(cursoId, usuario);
         return ResponseEntity.status(HttpStatus.OK).body(curso);
     }
-
 
     @DeleteMapping("/usuarios/{id}")
     public ResponseEntity<Curso> eliminarCursoUsuario(@PathVariable("id") Long id) {
@@ -76,12 +72,10 @@ public class CursosController {
     }
 
     @PostMapping("{cursoId}/usuario/")
-    public ResponseEntity<Curso> crearUsuario(@PathVariable("cursoId") Long cursoId, @RequestBody CrearUsuarioRequest usuarioRequest) {
+    public ResponseEntity<Curso> crearUsuario(@PathVariable("cursoId") Long cursoId,
+            @RequestBody CrearUsuarioRequest usuarioRequest) {
         Curso curso = service.crearUsuario(cursoId, usuarioRequest);
         return ResponseEntity.ok(curso);
     }
-
-
-
 
 }
