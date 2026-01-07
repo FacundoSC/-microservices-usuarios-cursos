@@ -1,0 +1,28 @@
+spring:
+  application:
+    name: msvc-gateway
+  cloud:
+    gateway:
+      mvc:
+        routes:
+          - id: msvc-cursos
+            uri: lb://msvc-cursos
+            predicates:
+              - Path=/api/cursos/**
+            filters:
+              - StripPrefix=2
+          - id: msvc-usuarios
+            uri: lb://msvc-usuarios
+            predicates:
+              - Path=/api/usuarios/**
+            filters:
+              - StripPrefix=2
+
+server:
+  port: 8090
+
+logging:
+  level:
+    org.springframework.cloud.gateway: TRACE
+    org.springframework.web.servlet: DEBUG
+    org.springframework.web: DEBUG
