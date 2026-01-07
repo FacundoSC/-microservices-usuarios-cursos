@@ -1,4 +1,4 @@
-package org.faccordoba.springcloud.msvc.usuarios.msvc.usuarios;
+package org.faccordoba.springcloud.msvc.usuarios.msvc.usuarios.adapter.in.web.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,8 +24,6 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-
-
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests((authHttp) -> authHttp
@@ -35,12 +33,24 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.PUT, "/{id}").hasAnyAuthority(SCOPE_WRITE)
                 .requestMatchers(HttpMethod.DELETE, "/{id}").hasAnyAuthority(SCOPE_DELETE)
                 .anyRequest().authenticated()) // todas las rutas que requieren autenticación
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) //Deshabilitamos para que no guarde la autenticación en la sesión y siempre con token
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Deshabilitamos
+                                                                                                              // para
+                                                                                                              // que no
+                                                                                                              // guarde
+                                                                                                              // la
+                                                                                                              // autenticación
+                                                                                                              // en la
+                                                                                                              // sesión
+                                                                                                              // y
+                                                                                                              // siempre
+                                                                                                              // con
+                                                                                                              // token
                 .oauth2Login(login -> login.loginPage("/oauth2/authorization/msvc-usuarios-client"))
                 .csrf(AbstractHttpConfigurer::disable)
                 .oauth2Client(withDefaults()).csrf(AbstractHttpConfigurer::disable)
-                .oauth2ResourceServer(httpSecurityOAuth2ResourceServerConfigurer ->
-                        httpSecurityOAuth2ResourceServerConfigurer.jwt(withDefaults())); // Habilitamos el uso de tokens JWT
+                .oauth2ResourceServer(
+                        httpSecurityOAuth2ResourceServerConfigurer -> httpSecurityOAuth2ResourceServerConfigurer
+                                .jwt(withDefaults())); // Habilitamos el uso de tokens JWT
 
         return http.build();
 
