@@ -35,10 +35,10 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.PUT, "/{id}").hasAnyAuthority(SCOPE_WRITE)
                 .requestMatchers(HttpMethod.DELETE, "/{id}").hasAnyAuthority(SCOPE_DELETE)
                 .anyRequest().authenticated()) // todas las rutas que requieren autenticación
-                .csrf(AbstractHttpConfigurer::disable) // deshabilitamos CSRF para no usar cookies
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) //Deshabilitamos para que no guarde la autenticación en la sesión y siempre con token
-                .oauth2Login(login -> login.loginPage("/oauth2/authorization/msvc-usuarios-client")) // página del login
-                .oauth2Client(withDefaults())
+                .oauth2Login(login -> login.loginPage("/oauth2/authorization/msvc-usuarios-client"))
+                .csrf(AbstractHttpConfigurer::disable)
+                .oauth2Client(withDefaults()).csrf(AbstractHttpConfigurer::disable)
                 .oauth2ResourceServer(httpSecurityOAuth2ResourceServerConfigurer ->
                         httpSecurityOAuth2ResourceServerConfigurer.jwt(withDefaults())); // Habilitamos el uso de tokens JWT
 

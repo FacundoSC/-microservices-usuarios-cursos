@@ -22,9 +22,12 @@ public class UsuarioService implements UserDetailsService {
     private WebClient.Builder webClient;
     public static final String URL = "http://msvc-usuarios:8001/login";
 
+    public UsuarioService(WebClient.Builder webClient) {
+        this.webClient = webClient;
+    }
 
     // TODO: Implementar el metodo loadUserByUsername para traer los datos del
-    @Autowired
+
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         try {
