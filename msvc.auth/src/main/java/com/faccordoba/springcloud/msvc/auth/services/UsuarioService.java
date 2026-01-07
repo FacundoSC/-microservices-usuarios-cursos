@@ -4,7 +4,6 @@ import com.faccordoba.springcloud.msvc.auth.Usuario;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -21,10 +20,7 @@ import java.util.Collections;
 public class UsuarioService implements UserDetailsService {
     private final Logger logger = LoggerFactory.getLogger(UsuarioService.class);
     private WebClient.Builder webClient;
-
-
     public static final String URL = "http://msvc-usuarios:8001/login";
-    @Autowired
 
 
     // TODO: Implementar el metodo loadUserByUsername para traer los datos del
