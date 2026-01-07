@@ -6,7 +6,7 @@ import org.faccordoba.springcloud.msvc.usuarios.msvc.usuarios.adapter.out.persis
 import org.faccordoba.springcloud.msvc.usuarios.msvc.usuarios.domain.exception.UsuarioNotFound;
 import org.faccordoba.springcloud.msvc.usuarios.msvc.usuarios.domain.model.Usuario;
 import org.faccordoba.springcloud.msvc.usuarios.msvc.usuarios.domain.port.out.repository.UsuarioRepository;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.faccordoba.springcloud.msvc.usuarios.msvc.usuarios.domain.port.out.security.SecurityPort;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -17,20 +17,20 @@ import java.util.Optional;
 public class UsuarioRepositoryAdapter implements UsuarioRepository {
     private UsuarioRepositoryJpa repository;
     private UsuarioMapper usuarioMapper;
-    // BCryptPasswordEncoder
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    // SecurityPort
+    private SecurityPort securityPort;
 
     public UsuarioRepositoryAdapter(UsuarioRepositoryJpa repository, UsuarioMapper usuarioMapper,
-            BCryptPasswordEncoder bCryptPasswordEncoder) {
+            SecurityPort securityPort) {
         this.repository = repository;
         this.usuarioMapper = usuarioMapper;
-        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.securityPort = securityPort;
     }
 
     @Override
     public Usuario save(Usuario usuario) {
         UsuarioEntity entity = usuarioMapper.toEntity(usuario);
-        entity.setPassword(bCryptPasswordEncoder.encode(usuario.getPassword()));
+        entity.setPassword(securityPort.encode(usuario.getPassword()));
         UsuarioEntity save = repository.save(entity);
         return usuarioMapper.toDomain(save);
     }
