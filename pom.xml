@@ -28,6 +28,7 @@
         <module>msvc.cursos</module>
         <module>msvc.usuarios</module>
         <module>msvc.gateway</module>
+        <module>msvc.auth</module>
     </modules>
 
 

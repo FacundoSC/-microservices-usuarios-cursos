@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 
 @RestController
@@ -20,16 +21,11 @@ public class UsuarioController {
         this.service = service;
     }
 
-    @PostMapping("/")
-    public ResponseEntity<UsuarioResponse> save(@Valid @RequestBody CrearUsuarioRequest usuario) {
-        return ResponseEntity.status(HttpStatus.CREATED.value())
-                        .body(service.save(usuario));
-    }
-
-    @GetMapping()
+    @GetMapping("/")
     public ResponseEntity<?> findAll() {
         return ResponseEntity.ok(service.findAll());
     }
+
     @GetMapping("/ids")
     public ResponseEntity<?> findAllById(@RequestParam(value = "ids") ArrayList<Long> ids) {
         return ResponseEntity.ok(service.findAllById(ids));
@@ -45,6 +41,24 @@ public class UsuarioController {
         return ResponseEntity.ok(service.findByEmail(email));
     }
 
+
+    @GetMapping("/authorized")
+    public Map<String, Object> authorized(@RequestParam("code") String code) {
+        return Map.of("code", code, "message", "Authorized");
+    }
+
+    @GetMapping("/login")
+    public ResponseEntity<?> loginByEmail(@RequestParam("email") String email)  {
+        return this.findByEmail(email);
+
+    }
+
+    @PostMapping("/")
+    public ResponseEntity<UsuarioResponse> save(@Valid @RequestBody CrearUsuarioRequest usuario) {
+        return ResponseEntity.status(HttpStatus.CREATED.value())
+                .body(service.save(usuario));
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<?> update(@PathVariable(value = "id") Long id,
                                     @Valid @RequestBody ActualizarUsuarioRequest request) {
@@ -56,6 +70,8 @@ public class UsuarioController {
         service.delete(id);
         return ResponseEntity.noContent().build();
     }
+
+
 
 
 }

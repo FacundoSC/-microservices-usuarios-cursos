@@ -91,6 +91,7 @@ public class UsuarioService implements CrearUsuarioUseCase, ObtenerUsuarioUseCas
         }
         usuarioExistente.setNombre(request.nombre());
         usuarioExistente.setEmail(request.email());
+        usuarioExistente.setPassword(request.password());
         Usuario usuarioActualizado = repository.save(usuarioExistente);
         log.info("Usuario actualizado exitosamente: {}", id);
         return mapper.toResponse(usuarioActualizado);

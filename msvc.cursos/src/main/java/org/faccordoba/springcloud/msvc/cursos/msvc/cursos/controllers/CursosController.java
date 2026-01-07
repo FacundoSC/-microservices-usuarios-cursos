@@ -25,8 +25,8 @@ public class CursosController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Curso> findById(@PathVariable("id") Long id) {
-        Optional<Curso> cursoOptional = service.findById(id);
+    public ResponseEntity<Curso> findById(@PathVariable("id") Long id, @RequestHeader(value="Authorization",required = true) String token) {
+        Optional<Curso> cursoOptional = service.findById(id, token);
         return cursoOptional.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
@@ -53,15 +53,15 @@ public class CursosController {
     }
 
     @PutMapping("/{cursoId}/asignar-usuario/")
-    public ResponseEntity<Curso> asignarUsuario(@PathVariable("cursoId") Long cursoId, @RequestBody Usuario usuario) {
-        Curso curso = service.asignarUsuario(cursoId, usuario);
+    public ResponseEntity<Curso> asignarUsuario(@PathVariable("cursoId") Long cursoId, @RequestBody Usuario usuario, @RequestHeader(value="Authorization",required = true) String token) {
+        Curso curso = service.asignarUsuario(cursoId, usuario, token);
         return ResponseEntity.status(HttpStatus.OK).body(curso);
     }
 
-    @PutMapping("{cursoId}/desasignar-usuario/")
+    @PutMapping("/{cursoId}/desasignar-usuario/")
     public ResponseEntity<Curso> desasignarUsuario(@PathVariable("cursoId") Long cursoId,
-            @RequestBody Usuario usuario) {
-        Curso curso = service.desasignarUsuario(cursoId, usuario);
+            @RequestBody Usuario usuario, @RequestHeader(value="Authorization",required = true) String token) {
+        Curso curso = service.desasignarUsuario(cursoId, usuario, token);
         return ResponseEntity.status(HttpStatus.OK).body(curso);
     }
 
