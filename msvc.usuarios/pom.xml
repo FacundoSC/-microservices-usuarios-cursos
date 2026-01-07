@@ -56,6 +56,30 @@
             <artifactId>spring-cloud-starter-kubernetes-client-loadbalancer</artifactId>
         </dependency>
 
+
+        <!-- SEGURIDAD -->
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+
+        <!-- OAuth2 Client para consumir recursos protegidos en otros microservicios -->
+        <!-- para el login con OAuth2 en el front -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-oauth2-client</artifactId>
+        </dependency>
+
+        <!-- OAuth2 Resource Server para proteger este microservicio -->
+        <!-- para proteger los endpoints del microservicio -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
+        </dependency>
+
+
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>

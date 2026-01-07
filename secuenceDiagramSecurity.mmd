@@ -1,0 +1,26 @@
+sequenceDiagram
+    autonumber
+    actor User as Usuario (Navegador)
+    participant Client as Cliente (Postman/App)
+    participant Auth as Auth Server (msvc-auth)
+
+    Note over User, Auth: Paso 1: Obtener el Código de Autorización (Code)
+
+    User->>Client: Inicia Login
+    Client->>Auth: GET /oauth2/authorize?<br/>response_type=code<br/>&client_id=msvc-usuarios-client<br/>&redirect_uri=.../authorized<br/>&scope=read write
+    
+    Auth-->>User: Redirecciona a Página de Login
+    User->>Auth: Ingresa Credenciales (admin/12345)
+    
+    Auth-->>Client: Redirecciona a redirect_uri con ?code=CODIGO_GENERADO
+    
+    Note right of Client: El cliente captura el parámetro "code" de la URL
+
+    Note over User, Auth: Paso 2: Canjear el Código por el Token
+
+    Client->>Auth: POST /oauth2/token
+    Note right of Client: grant_type=authorization_code<br/>code=CODIGO_GENERADO<br/>redirect_uri=.../authorized<br/>Authorization: Basic base64(client_id:secret)
+
+    Auth-->>Client: Retorna JSON { "access_token": "...", "refresh_token": "..." }
+
+    Note right of Client: El cliente ahora puede usar el access_token<br/>para llamar a los recursos protegidos

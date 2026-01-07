@@ -11,6 +11,7 @@ import org.faccordoba.springcloud.msvc.cursos.msvc.cursos.models.entity.CursoUsu
 import org.faccordoba.springcloud.msvc.cursos.msvc.cursos.repositories.CursoRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestHeader;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,13 +34,13 @@ public class CursoServiceImpl implements CursoService {
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<Curso> findById(Long id) {
+    public Optional<Curso> findById(Long id, String token) {
         Curso curso = getCursoIfExists(id);
         if (!curso.getCursoUsuarios().isEmpty()){
             ArrayList<Long> userIds = curso.getCursoUsuarios().stream()
                     .map(CursoUsuario::getUsuarioId)
                     .collect(ArrayList::new, ArrayList::add, ArrayList::addAll);
-            List<Usuario> usuarios = usuarioClient.findAllById(userIds);
+            List<Usuario> usuarios = usuarioClient.findAllById(userIds, token);
             curso.setUsuarios(usuarios);
         }
         return Optional.of(curso);
@@ -77,9 +78,9 @@ public class CursoServiceImpl implements CursoService {
 
     @Override
     @Transactional
-    public Curso asignarUsuario(Long cursoId, Usuario usuario) {
+    public Curso asignarUsuario(Long cursoId, Usuario usuario, String token) {
         Curso curso = getCursoIfExists(cursoId);
-        Usuario usuarioMsvc = usuarioClient.findById(usuario.id());
+        Usuario usuarioMsvc = usuarioClient.findById(usuario.id(), token);
         CursoUsuario cursoUsuario = new CursoUsuario();
         cursoUsuario.setUsuarioId(usuarioMsvc.id());
         curso.addCursoUsuario(cursoUsuario);
@@ -91,9 +92,9 @@ public class CursoServiceImpl implements CursoService {
 
     @Override
     @Transactional
-    public Curso desasignarUsuario(Long cursoId, Usuario usuario) {
+    public Curso desasignarUsuario(Long cursoId, Usuario usuario, String token) {
         Curso curso = getCursoIfExists(cursoId);
-        Usuario usuarioMsvc = usuarioClient.findById(usuario.id());
+        Usuario usuarioMsvc = usuarioClient.findById(usuario.id(), token);
         CursoUsuario cursoUsuario = curso.getCursoUsuarios()
                 .stream().filter(u -> u.getUsuarioId().equals(usuarioMsvc.id()))
                 .findFirst().orElseThrow(() ->new CursoUsuarioNotFound(cursoId, usuarioMsvc.id()));

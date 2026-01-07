@@ -3,11 +3,14 @@ kind: ConfigMap
 metadata:
   name: msvc-usuarios
 data:
+  lb_auth_issuer_uri: http://msvc-auth:9000
+  lb_usuarios_uri: http://msvc-usuarios:8001
   port: "8001"
   db_host: usuarios-db:3306
   db_name: msvc_usuarios
   db_username: root
-  cursos_url: msvc-cursos:8002
+  cursos_url: http://msvc-cursos:8002
+  spring-profiles-active: dev
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -18,7 +21,7 @@ data:
     db_host: cursos-db:5432
     db_name: msvc_cursos
     db_username: postgres
-    usuarios_url: msvc-usuarios:8001
+    usuarios_url: http://msvc-usuarios:8001
 ---
 apiVersion: v1
 kind: Secret

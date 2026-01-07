@@ -14,25 +14,23 @@ import java.util.List;
 @FeignClient(name = "msvc-usuarios", url= "${msvc.usuarios.url}")
 public interface UsuarioClientRest {
 
-
-    @PostMapping(value="/api/v1/usuarios/")
-    UsuarioResponse save(@Valid @RequestBody CrearUsuarioRequest usuario);
-
-
-    @GetMapping(value = "/api/v1/usuarios/{id}")
-    Usuario findById(@PathVariable(value = "id") Long id);
-
-    @GetMapping("/api/v1/usuarios/")
+    @GetMapping("/")
     List<Usuario> findAll();
 
-    @GetMapping("/api/v1/usuarios/email/{email}")
+    @GetMapping(value = "/{id}")
+    Usuario findById(@PathVariable(value = "id") Long id, @RequestHeader(value="Authorization",required = true) String token);
+
+    @GetMapping("/ids")
+    List<Usuario> findAllById(@RequestParam(value = "ids") ArrayList<Long> ids, @RequestHeader(value="Authorization",required = true) String token);
+
+    @GetMapping("/email/{email}")
     Usuario findByEmail(@PathVariable(value = "email") String email);
 
-    @DeleteMapping("/api/v1/usuarios/{id}")
-    ResponseEntity<?> delete(@PathVariable(value = "id") Long id);
+    @PostMapping(value="/")
+    UsuarioResponse save(@Valid @RequestBody CrearUsuarioRequest usuario);
 
-    @GetMapping("/api/v1/usuarios")
-    List<Usuario> findAllById(@RequestParam(value = "ids") ArrayList<Long> ids);
+    @DeleteMapping("/{id}")
+    ResponseEntity<?> delete(@PathVariable(value = "id") Long id);
 
 
 }
